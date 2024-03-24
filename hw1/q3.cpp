@@ -25,4 +25,4 @@ public:
     int Compare(String y); // compare two strings of letters of alphabet.
     // return -1 if <y, 0 if =y, and 1 if >y.
     // If two strings of letter of alphabet, x = (x0,…,xm-1) and y=(y0,…,yn-1) //where xi, yj are letters, then the Compare member function will decide //whether x<y, x=y, or x>y, where x < y means if xi=yi for 0≤i<j and xj<yj //or if xi=yi for 0≤i≤m and m<n. x=y means m=n and xi=yi for 0≤i<n. x>y //means if xi=yi for 0≤i<j and xj>yj or if xi=yi for 0≤i≤n and m>n.
-}
+};
