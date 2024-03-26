@@ -11,6 +11,7 @@ private:
     float coef;
     int exp;
 };
+
 class Polynomial
 {
     // p(x) = a0 x^e0 + … + an x^en
@@ -43,6 +44,8 @@ private:
     int capacity;
     int terms;
 };
+
+
 
 int main(){
     Polynomial a, b;
