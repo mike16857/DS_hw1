@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 class Polynomial;
@@ -6,6 +7,8 @@ class Polynomial;
 class Term
 {
     friend Polynomial;
+    friend ostream &operator<<(ostream &os, Polynomial &poly);
+    friend istream &operator>>(istream &is, Polynomial &poly);
 
 private:
     float coef;
@@ -22,22 +25,17 @@ public:
     ~Polynomial();
     // destructor
     Polynomial Add(Polynomial poly);
-    // return the sum of *this and poly
     Polynomial Subt(Polynomial poly);
-    // return the difference of *this and poly
     Polynomial Mult(Polynomial poly);
     // return the product of *this and poly
     void NewTerm(const float theCoeff, const int theExp);
     float Eval(float f);
-    // Evaluate the polynomial *this at f and return the results
     int operator!();
     // if *this is the zero polynomial, return 1; else return 0;
     float Coef(int e);
-    // return the coefficient of e in *this
     int LeadExp();
-    // return the largest exponent in *this
-    friend ostream &operator<<(ostream &os, Polynomial &p);
-    friend istream &operator>>(istream &is, Polynomial &p);
+    friend ostream &operator<<(ostream &os, Polynomial &poly);
+    friend istream &operator>>(istream &is, Polynomial &poly);
 
 private:
     Term *termArray;
@@ -46,10 +44,207 @@ private:
 };
 
 
+Polynomial::Polynomial()
+{
+    capacity = 1;
+    terms = 0;
+    termArray = new Term[capacity];
+    termArray[0].exp = 0;
+    termArray[0].coef = 0;
+}
+
+// Polynomial::~Polynomial()
+// {
+
+// }
+
+Polynomial Polynomial::Add(Polynomial b)
+{
+    Polynomial c;
+    int aPos = 0, bPos = 0;
+
+    while ((aPos < terms) && (bPos < b.terms)) {
+        if (termArray[aPos].exp == b.termArray[bPos].exp) {
+            float t = termArray[aPos].coef + b.termArray[bPos].coef;
+            if (t) c.NewTerm(t, termArray[aPos].exp);
+            aPos++, bPos++;
+        }
+        else if (termArray[aPos].exp > b.termArray[bPos].exp) {
+            c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+            aPos++;
+        }
+        else {
+            c.NewTerm(b.termArray[bPos].coef, b.termArray[bPos].exp);
+            bPos++;
+        }
+    }
+
+    for (; aPos < terms; aPos++)
+        c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+    for (; bPos < b.terms; bPos++)
+        c.NewTerm(b.termArray[bPos].coef, b.termArray[bPos].exp);
+
+    return c;
+}
+
+Polynomial Polynomial::Subt(Polynomial b)
+{
+    Polynomial c;
+    int aPos = 0, bPos = 0;
+
+    while ((aPos < terms) && (bPos < b.terms)) {
+        if (termArray[aPos].exp == b.termArray[bPos].exp) {
+            float t = termArray[aPos].coef - b.termArray[bPos].coef;
+            if (t) c.NewTerm(t, termArray[aPos].exp);
+            aPos++, bPos++;
+        }
+        else if (termArray[aPos].exp > b.termArray[bPos].exp) {
+            c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+            aPos++;
+        }
+        else {
+            c.NewTerm((-1) * b.termArray[bPos].coef, b.termArray[bPos].exp);
+            bPos++;
+        }
+    }
+
+    for (; aPos < terms; aPos++)
+        c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+    for (; bPos < b.terms; bPos++)
+        c.NewTerm((-1) * b.termArray[bPos].coef, b.termArray[bPos].exp);
+
+    return c;
+}
+
+Polynomial Polynomial::Mult(Polynomial b)
+{
+
+}
+
+void Polynomial::NewTerm(const float theCoeff, const int theExp)
+{
+    if (terms == capacity) {
+        capacity *= 2;
+        Term *temp = new Term[capacity];
+        copy(termArray, termArray + terms, temp);
+        delete [] termArray;
+        termArray = temp;
+    }
+    termArray[terms].coef = theCoeff;
+    termArray[terms++].exp = theExp;
+}
+
+float Polynomial::Eval(float f)
+{
+    float val = 0;
+    for (int i = 0; i < terms; i++) {
+        float tmp = 1;
+        for (int j = 0; j < termArray[i].exp; j++)
+            tmp *= f;
+        val += tmp * termArray[i].coef;  
+    }
+
+    return val;
+}
+
+int Polynomial::operator!()
+{   
+    int isZero = 1;
+    for (int i = 0; i < terms; i++)
+        if (termArray[i].coef != 0) isZero = 0;
+
+    return isZero;
+}
+
+float Polynomial::Coef(int e)
+{
+    float coe;
+
+    for (int i = 0; i < terms; i++)
+        if (termArray[i].exp == e) {
+            coe = termArray[i].coef;
+            break;
+        }
+
+    return coe;
+}
+
+int Polynomial::LeadExp()
+{
+    int leadExp = termArray[0].exp;
+    for (int i = 1; i < terms; i++) {
+        if (termArray[i].exp > leadExp) 
+            leadExp = termArray[i].exp;
+    }
+    return leadExp;
+}
+
+ostream& operator<<(ostream& os, Polynomial &poly)
+{
+	float temp;
+	
+	if (!poly) os << "0" << endl;
+	else {
+		if (poly.termArray[0].coef == 0);
+		else if (poly.termArray[0].coef == 1 && poly.termArray[0].exp == 1) 
+            os << "x";
+		else if (poly.termArray[0].coef != 1 && poly.termArray[0].exp == 1) 
+			os << poly.termArray[0].coef << "x";
+		else if (poly.termArray[0].coef == 1 && poly.termArray[0].exp > 1) 
+			os << "x^" << poly.termArray[0].exp;
+		else if (poly.termArray[0].coef != 1 && poly.termArray[0].exp > 1)
+			os << poly.termArray[0].coef << "x^" << poly.termArray[0].exp;
+		else os << poly.termArray[0].coef;
+
+		if (poly.terms > 1){
+			for (int i = 1; i < poly.terms; i++) {
+				temp = poly.termArray[i].coef;
+				if (temp < 0) {
+					os << " -";
+					temp = (-1) * temp;
+				}
+				else if (temp > 0) os << " +";
+
+				if (temp == 0);
+				else if (temp == 1 && poly.termArray[i].exp == 1) 
+                    os << "x";
+				else if (temp != 1 && poly.termArray[i].exp == 1) 
+					os << temp << "x";
+				else if (temp == 1 && poly.termArray[i].exp > 1) 
+					os << "x^" << poly.termArray[i].exp;
+				else if (temp != 1 && poly.termArray[i].exp > 1)
+					os << temp << "x^" << poly.termArray[i].exp;
+				else os << temp;
+			}
+		}
+		os << endl;
+	}
+	return os;
+}
+
+istream& operator>>(istream& is, Polynomial &poly)
+{
+    float coef;
+    int exp;
+    char temp;
+    
+    cout << "Please input in the form {(coef,exp)} : ";
+
+    while ((temp = getchar()) != '}') {
+        getchar();
+        is >> coef >> temp >> exp;
+        getchar();
+        poly.NewTerm(coef, exp);
+    }
+    getchar();
+    
+    return is;
+}
+
 
 int main(){
     Polynomial a, b;
-
+    
     // use >> to build polynomial object a = 2x3 + 3x2 + 4x + 5, b = x3 – x2 + x – 1
     // demo  <<
     // demo  << results of Add, Subt, Mul
