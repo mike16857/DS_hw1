@@ -221,23 +221,6 @@ void SparseMatrix::StoreSum(const int sum, const int r, const int c)
     }
 }
 
-// ostream& operator<<(ostream& os, SparseMatrix& mat)
-// {
-//     int i, j;
-//     for (i = 0; i < mat.rows; i++)
-//         for (j = 0; j < mat.cols; j++)
-//             for (int k = 0; k < mat.terms; k++) {
-//                 if (mat.smArray[k].row == i && mat.smArray[k].col == j)
-//                     os << mat.smArray[k].value << " ";
-//                 else
-//                     os << "0 ";
-//             }
-//             os << '\n';
-
-//     return os;
-
-// }
-
 ostream& operator<<(ostream& os, SparseMatrix& mat) 
 {
 	if (mat.terms == 0) os << "{";

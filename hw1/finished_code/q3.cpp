@@ -66,8 +66,6 @@ String String::Concat(String t)
     int i, j;
     char *concat = new char[totalLen];
 
-    // for (i = 0; i < Length(); i++) concat[i] = str[i];
-    // for (j = 0; j < t.Length(); j++) concat[i + j] = t.str[j];
     copy(str, str + Length(), concat);  // copy str to concat
     copy(t.str, t.str + t.Length(), concat + Length()); // continue copying t.str to concat + len1
 
@@ -99,7 +97,7 @@ int String::Find(String pat)
     return -1;
 }
 
-int String::FastFind(String pat) // KMP algorithm // need fixing
+int String::FastFind(String pat) // KMP algorithm 
 {
     // calculate failure function
     int f[pat.Length()];
@@ -141,8 +139,6 @@ String String::Delete(int start, int length)
     int i, j;
     char *remain = new char[totalLen];
 
-    // for (i = 0; i < start; i++) remain[i] = str[i];
-    // for (i = start; i < totalLen; i++) remain[i] = str[i + length];
     copy(str, str + start, remain);
     copy(str + start + length, str + Length(), remain + start);
 
@@ -189,23 +185,6 @@ int String::Compare(String y)
     else return 1;                                  // "y" string reaches the end
 }
 
-// int* String::FailureFunction()  // KMP failure function
-// {
-//     int f[Length()];
-//     int lengthP = Length();
-//     f[0] = -1;
-//     for (int j = 1; j < lengthP; j++) {
-//         int i = f[j - 1];
-//         while ((str[j] != str[i + 1]) && (i >= 0))
-//             i = f[i];
-//         if (str[j] == str[i + 1])
-//             f[j] = i + 1;
-//         else
-//             f[j] = -1;
-//     }
-//     return f;
-// }
-
 ostream& operator<<(ostream& os, String& s)
 {
     os << s.str << endl;
@@ -228,21 +207,6 @@ istream& operator>>(istream& is, String& s)
 
     return is;
 }
-// istream& operator>>(istream &is, String &s) // not mine
-// {
-//     int l;
-    
-//     cout << "How long is your string : ";
-//     is >> l;
-//     cout << "Input your string : ";
-//     char *temp = new char[l];
-//     is >> temp;
-//     String input(temp, l);
-//     s = input;
-//     delete [] temp;
-    
-//     return is;
-// }
 
 int main()
 {
@@ -315,6 +279,5 @@ int main()
     else cout << "String s1 is smaller than String s2" << endl;
 
     return 0;
-    //You should try out at least two example runs of your program to demonstrate all those functions.
 }
 
