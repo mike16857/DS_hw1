@@ -29,7 +29,7 @@ public:
 private:
     void FailureFunction();
     char *str; 
-    int *f;
+    int *f; // calculated failure function
 };
 
 String::String(char *init, int m)
@@ -143,6 +143,6 @@ istream& operator>>(istream &, String &)
 
 int main()
 {
-
+    //You should try out at least two example runs of your program to demonstrate all those functions.
 }
 

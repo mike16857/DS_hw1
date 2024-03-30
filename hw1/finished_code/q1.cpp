@@ -272,6 +272,7 @@ int main(){
 
     cout << "Polynomial a = " << a;
     cout << "Polynomial b = " << b;
+    
     cout << "a + b = " << add;
     cout << "a - b = " << sub;
     cout << "a * b = " << mul;
@@ -279,10 +280,12 @@ int main(){
     cout << "a(x = 1) = " << a.Eval(1) << endl;
     cout << "b(x = 2) = " << b.Eval(2) << endl;
     cout << "a.Coef(5) = " << a.Coef(5) << endl;
-    cout << "b.LeadExp = " << b.LeadExp() << endl;
+    cout << "b.LeadExp = " << b.LeadExp() << endl;  
+
+    return 0;
     // use >> to build polynomial object a = 2x3 + 3x2 + 4x + 5, b = x3 – x2 + x – 1
     // demo  <<
     // demo  << results of Add, Subt, Mul
-    // demo results of a.Exal(1), b.Eval(2), a.Coef(5), b.LeadExp
+    // demo results of a.Exal(1), b.Eval(2), a.Coef(5), b.LeadExp   
 }
 
