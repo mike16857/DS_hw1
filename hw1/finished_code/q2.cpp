@@ -238,7 +238,7 @@ void SparseMatrix::StoreSum(const int sum, const int r, const int c)
 
 // }
 
-ostream& operator<<(ostream& os, SparseMatrix& mat) // not mine
+ostream& operator<<(ostream& os, SparseMatrix& mat) 
 {
 	if (mat.terms == 0) os << "{";
 	else {
