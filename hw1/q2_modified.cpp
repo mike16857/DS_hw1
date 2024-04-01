@@ -97,6 +97,8 @@ SparseMatrix SparseMatrix::Add(SparseMatrix b)
     // Incompatible matrices
     if (rows != b.rows || cols != b.cols)
         throw IncompatibleMatricesException();
+        // throw "Incompatible matrices."; // compiler: "terminate called after throwing an instance of 'char const*'"
+        // return -1;
 
     SparseMatrix c(rows, cols, 0);
     int currRowA = 0, currRowB = 0;
@@ -149,6 +151,8 @@ SparseMatrix SparseMatrix::Multiply(SparseMatrix b)
     // Incompatible matrices
 	if (cols != b.rows)
         throw IncompatibleMatricesException();
+		// throw "Incompatible matrices"; // compiler: "terminate called after throwing an instance of 'char const*'"
+        // return -1;
 
 	SparseMatrix bXpose = b.FastTranspose();
 	SparseMatrix d(rows, b.cols, 0);
@@ -227,6 +231,23 @@ void SparseMatrix::StoreSum(const int sum, const int r, const int c)
     }
 }
 
+// ostream& operator<<(ostream& os, SparseMatrix& mat)
+// {
+//     int i, j;
+//     for (i = 0; i < mat.rows; i++)
+//         for (j = 0; j < mat.cols; j++)
+//             for (int k = 0; k < mat.terms; k++) {
+//                 if (mat.smArray[k].row == i && mat.smArray[k].col == j)
+//                     os << mat.smArray[k].value << " ";
+//                 else
+//                     os << "0 ";
+//             }
+//             os << '\n';
+
+//     return os;
+
+// }
+
 ostream& operator<<(ostream& os, SparseMatrix& mat) // not mine
 {
 	if (mat.terms == 0) os << "{";
@@ -271,6 +292,7 @@ istream& operator>>(istream& is, SparseMatrix& mat)
 
 int main()
 {
+
     SparseMatrix a, b, c, d;
 
     cout << "Input matrix a: " << endl; // 4x3, 4 terms
@@ -307,17 +329,17 @@ int main()
         d = a.Add(c);
         cout << "Add a and c: " << d << endl; // incompatible matrices
     } catch (const IncompatibleMatricesException& e) {
-        cout << "Add a and c: Error: " << e.what() << endl;
+        cout << "Add a and c Error: " << e.what() << endl;
     } catch (const exception& e) {
-        cout << "Add a and c: Error: " << e.what() << endl;
+        cout << "Add a and c Error: " << e.what() << endl;
     }
     try {
         d = b.Add(c);
         cout << "Add b and c: " << d << endl; // incompatible matrices
     } catch (const IncompatibleMatricesException& e) {
-        cout << "Add b and c: Error: " << e.what() << endl;
+        cout << "Add b and c Error: " << e.what() << endl;
     } catch (const exception& e) {
-        cout << "Add b and c: Error: " << e.what() << endl;
+        cout << "Add b and c Error: " << e.what() << endl;
     }
 
     // Multiply
@@ -325,9 +347,9 @@ int main()
         d = a.Multiply(b);
         cout << "Multiply a and b: " << d << endl; // incompatible matrices
     } catch (const IncompatibleMatricesException& e) {
-        cout << "Multiply a and b: Error: " << e.what() << endl;
+        cout << "Multiply a and b Error: " << e.what() << endl;
     } catch (const exception& e) {
-        cout << "Multiply a and b: Error: " << e.what() << endl;
+        cout << "Multiply a and b Error: " << e.what() << endl;
     }
     d = a.Multiply(c);
     cout << "Multiply a and c: " << d << endl;
