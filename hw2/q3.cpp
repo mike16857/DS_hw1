@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-template < class T >
+template <class T>
 class Queue
 {
 public:
@@ -22,7 +22,7 @@ private:
     capacity;
 } ;
 
-template < class T >
+template <class T>
 Queue<T>::Queue(int queueCapacity ):capacity(queueCapacity)
 {
     if (capacity < 1) throw "Queue capacity must be > 0";
