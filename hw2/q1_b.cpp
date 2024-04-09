@@ -63,17 +63,14 @@ bool Bag<T>::IsEmpty() const
 template <class T>
 T& Bag<T>::Element() const
 {
-    if (IsEmpty())
-        throw "Bag is empty";
-
+    if (IsEmpty()) throw "Bag is empty";
     return array[0];
 }
 
 template <class T>
 void Bag<T>::Push(const T& x)
 {
-    if (capacity == top + 1)
-    {
+    if (capacity == top + 1) {
         ChangeSize1D(array, capacity, 2 * capacity);
         capacity *= 2;
     }
@@ -94,6 +91,9 @@ void Bag<T>::Pop()
 template <class T>
 class Queue : public Bag<T>
 {
+    using Bag<T>::IsEmpty;
+	using Bag<T>::capacity;
+    using Bag<T>::array;
     template <class U>
 	friend ostream& operator<<(ostream &os, Queue<U> &queue);
 	template <class U>
@@ -141,7 +141,11 @@ istream& operator>>(istream &is, Queue<T> &queue)
 }
 
 template <class T>
-Queue<T>::Queue(int queueCapacity) : Bag<T>(queueCapacity) {}
+Queue<T>::Queue(int queueCapacity) : Bag<T>(queueCapacity) 
+{
+    front = 0;
+    rear = 0;
+}
 
 template <class T>
 Queue<T>::~Queue() {}
@@ -177,28 +181,59 @@ void Queue<T>::Push(const T& x)
 template <class T>
 void Queue<T>::Pop()
 {
-    if (IsEmpty()) throw "Queue is empty, cannot delete";
-    front = (front + 1) % capcity;
+    // if (IsEmpty()) throw "Queue is empty, cannot delete";
+    front = (front + 1) % capacity;
     array[front].~T(); // destructor for T
 }
 
 template <class T>
 inline T& Queue<T>::Front() const
 {
-    if (IsEmpty()) throw "Queue is empty";
-    return Bag<T>::array[(front + 1) % capacity];
+    // if (IsEmpty()) throw "Queue is empty";
+    return array[(front + 1) % capacity];
 }
 
 template <class T>
 inline T& Queue<T>::Rear() const
 {
-    if (IsEmpty()) throw "Queue is empty";
-    return Bag<T>::array[rear];
+    // if (IsEmpty()) throw "Queue is empty";
+    return array[rear];
 }
-
 
 int main()
 {
-
+    Queue<int> S1(1);
+    Queue<float> S2(1);
+    int push;
+    float pu;
+    
+    //int
+    cout << "type in int" << endl;
+    cin >> S1;
+    cout << "S1 = " << S1;
+    cout << "The size of S1 is : " << S1.Size() << endl;
+	S1.Pop();
+	cout << "S1 after pop = " << S1;
+	cout << "What element do you wan't to put in S1? ";
+    cin >> push;
+    S1.Push(push);
+    cout << "S1 = " << S1 << endl;
+    
+	//float
+	cout << "type in float" << endl;
+    cin >> S2;
+    cout << "S2 = " << S2;
+    cout << "The size of S2 is : " << S2.Size() << endl;
+	S2.Pop();
+	cout << "S2 after pop = " << S2;
+	cout << "What element do you wan't to put in S2? ";
+    cin >> pu;
+    S2.Push(pu);
+    cout << "S2 = " << S2;
+    
     return 0;
 }
+// int main()
+// {
+//     return 0;
+// }

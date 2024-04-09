@@ -91,7 +91,11 @@ void Bag<T>::Pop()
 /* Stack */
 template <class T>
 class Stack : public Bag<T>
-{
+{   
+    using Bag<T>::IsEmpty;
+	using Bag<T>::capacity;
+    using Bag<T>::array;
+    using Bag<T>::top;
     template <class U>
 	friend ostream& operator<<(ostream &os, Stack<U> &stack);
 	template <class U>
@@ -139,7 +143,7 @@ Stack<T>::~Stack() {}
 template <class T>
 T& Stack<T>::Top() const
 {
-    if (IsEmpty()) throw "Stack is empty."
+    if (IsEmpty()) throw "Stack is empty.";
     return array[top];
 }
 
@@ -150,9 +154,40 @@ void Stack<T>::Pop()
     array[top--].~T();
 }
 
-
 int main()
 {
+    Stack<int> S1(1);
+    Stack<float> S2(1);
+    int push;
+    float pu;
+    
+    //int
+    cout << "type in int" << endl;
+    cin >> S1;
+    cout << "S1 = " << S1;
+    cout << "The size of S1 is : " << S1.Size() << endl;
+	S1.Pop();
+	cout << "S1 after pop = " << S1;
+	cout << "What element do you wan't to put in S1? ";
+    cin >> push;
+    S1.Push(push);
+    cout << "S1 = " << S1 << endl;
+    
+	//float
+	cout << "type in float" << endl;
+    cin >> S2;
+    cout << "S2 = " << S2;
+    cout << "The size of S2 is : " << S2.Size() << endl;
+	S2.Pop();
+	cout << "S2 after pop = " << S2;
+	cout << "What element do you wan't to put in S2? ";
+    cin >> pu;
+    S2.Push(pu);
+    cout << "S2 = " << S2;
     
     return 0;
 }
+// int main()
+// { 
+//     return 0;
+// }
