@@ -131,20 +131,20 @@ ostream& operator<<(ostream &os, Items &item)
 }
 
 void Path(const int m, const int p)
-{// ¿é¥X°g®cªº¤@­Ó¸ô®|¡]¦pªG¦³ªº¸Ü¡^¡F maze[0][i] = maze[m+1][i] = maze[j][0] = maze[j][p+1] = 1, 0 „T i „T p+1, 0 „T j „T m+1¡C±q (1, 1) ¶}©l
+{// ï¿½ï¿½Xï¿½gï¿½cï¿½ï¿½ï¿½@ï¿½Ó¸ï¿½ï¿½|ï¿½]ï¿½pï¿½Gï¿½ï¿½ï¿½ï¿½ï¿½Ü¡^ï¿½F maze[0][i] = maze[m+1][i] = maze[j][0] = maze[j][p+1] = 1, 0 ï¿½T i ï¿½T p+1, 0 ï¿½T j ï¿½T m+1ï¿½Cï¿½q (1, 1) ï¿½}ï¿½l
 	mark[1][1] = 1;
 	Stack<Items> stack(m * p);
-	Items temp = {1, 1, E}; // ³]©w temp.x¡Btemp.y¡B»Ptemp.dir
+	Items temp = {1, 1, E}; // ï¿½]ï¿½w temp.xï¿½Btemp.yï¿½Bï¿½Ptemp.dir
 	stack.Push(temp);
 	
-	while (!stack.IsEmpty()){ // °ïÅ|¤£¬OªÅªº
+	while (!stack.IsEmpty()){ // ï¿½ï¿½ï¿½|ï¿½ï¿½ï¿½Oï¿½Åªï¿½
 		temp = stack.Top();
-		stack.Pop(); // ¼u¥X
+		stack.Pop(); // ï¿½uï¿½X
 		int i = temp.x; int j = temp.y; int d = temp.dir;
-		while (d < 8){// ©¹«e²¾°Ê
-			int g = i + move[d].di; int h = j + move[d].dj;
-			if ((g == m) && (h == p)){ // ©è¹F¥X¤f
-				cout << stack; // ¿é¥X¸ô®|
+		while (d < 8){// ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½
+            int g = i + ::move[d].di; int h = j + ::move[d].dj;
+			if ((g == m) && (h == p)){ // ï¿½ï¿½Fï¿½Xï¿½f
+				cout << stack; // ï¿½ï¿½Xï¿½ï¿½ï¿½|
 				cout << "(" << i << ", " << j << ", ";
 				switch (d) {
         			case N: cout << "N"; break;
@@ -161,12 +161,12 @@ void Path(const int m, const int p)
 				return;
 			}
 			if ((!maze[g][h]) && (!mark[g][h])){ 
-				mark[g][h] = 1;// ·s¦ì¸m
+				mark[g][h] = 1;// ï¿½sï¿½ï¿½m
 				temp.x = i; temp.y = j; temp.dir = d; //try new direction
-				stack.Push(temp); // ¥[¤J°ïÅ|
-				i = g; j = h; d = N; // ²¾¨ì (g, h)
+				stack.Push(temp); // ï¿½[ï¿½Jï¿½ï¿½ï¿½|
+				i = g; j = h; d = N; // ï¿½ï¿½ï¿½ï¿½ (g, h)
 			}
-			else d++; // ¸Õ¤U¤@­Ó¤è¦V
+			else d++; // ï¿½Õ¤Uï¿½@ï¿½Ó¤ï¿½V
 		}
 	}
 	cout << "No path in maze." << endl;
