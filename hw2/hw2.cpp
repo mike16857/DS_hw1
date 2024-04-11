@@ -81,4 +81,42 @@ public:
 private:
     T* deque;
     int front, rear, capacity;
-} ;
+};
+
+
+
+template <class T>
+void Insert(int k, T &y)
+{
+    if (array is full) {
+        T *tmpArray = new T[2 * capacity];
+        copy(the first k elements of array, tmpArray);
+        tmpArray[k] = y;
+        copy(the rest of the elements of array, tmpArray + k + 1);
+        delete [] array;
+        array = tmpArray;
+        capacity *= 2;
+    }
+    else {
+        curPos = (front + k) % capacity;
+        while (not yet finish moving elements from the original (k+1)th element to rear element) {
+            array[curPos] = array[(curPos - 1 + capacity) % capacity]; // move element backward starting from rear element to (k+1)th element
+                                                                       // so that the (k+1)th space is available for the new element y
+            curPos = (curPos - 1 + capacity) % capacity;
+        }
+        array[(front + k) % capacity] = y;
+    }
+}
+
+
+template <class T>
+void Delete(int k)
+{
+    curPos = (front + k) % capacity;
+    while (not yet finish moving elements from the (k+1)th element to rear element) {
+        array[curPos] = array[(curPos + 1) % capacity]; // move elements forward starting from (k+1)th element to rear element
+                                                        // so that the kth space is filled after the kth element is deleted
+        curPos = (curPos + 1) % capacity;
+    }
+    rear = (rear - 1 + capacity) % capacity;
+}
