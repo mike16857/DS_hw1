@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-
 /* Bag */
 template <class T>
 class Bag
@@ -63,14 +62,17 @@ bool Bag<T>::IsEmpty() const
 template <class T>
 T& Bag<T>::Element() const
 {
-    if (IsEmpty()) throw "Bag is empty";
+    if (IsEmpty())
+        throw "Bag is empty";
+
     return array[0];
 }
 
 template <class T>
 void Bag<T>::Push(const T& x)
 {
-    if (capacity == top + 1) {
+    if (capacity == top + 1)
+    {
         ChangeSize1D(array, capacity, 2 * capacity);
         capacity *= 2;
     }
@@ -86,147 +88,99 @@ void Bag<T>::Pop()
     array[top--].~T();
 }
 
-
-/* Queue */
+/* Stack */
 template <class T>
-class Queue : public Bag<T>
-{
+class Stack : public Bag<T>
+{   
     using Bag<T>::IsEmpty;
 	using Bag<T>::capacity;
     using Bag<T>::array;
+    using Bag<T>::top;
     template <class U>
-	friend ostream& operator<<(ostream &os, Queue<U> &queue);
+	friend ostream& operator<<(ostream &os, Stack<U> &stack);
 	template <class U>
-	friend istream& operator>>(istream &is, Queue<U> &queue);
+	friend istream& operator>>(istream &is, Stack<U> &stack);
 	template <class U>
     friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
 public:
-    Queue(int queueCapacity = 10);
-    ~Queue();
-    int Size() const;
-    void Push(const T&);
+    Stack (int stackCapacity = 10);
+    ~Stack();
+    T& Top() const;
     void Pop();
-    T& Front() const;
-    T& Rear() const;   
-protected:
-    int front;
-    int rear; 
 };
 
 template <class T>
-ostream& operator<<(ostream &os, Queue<T> &queue)
+ostream& operator<<(ostream &os, Stack<T> &stack)
 {
-    os << "Queue: ( " << queue.array[(queue.front + 1) % queue.capacity];
-    for (int i = (queue.front + 2) % queue.capacity; i != (queue.rear + 1) % queue.capacity; ) {
-        os << ", " << queue.array[i];
-        i = (i + 1) % queue.capacity;
-    }
+    os << "Stack: ( " << stack.array[0];
+    for (int i = 1; i <= stack.top; i++)
+        os << ", " << stack.array[i];
     os << " )" << endl;
     return os;
 }
 
 template <class T>
-istream& operator>>(istream &is, Queue<T> &queue)
+istream& operator>>(istream &is, Stack<T> &stack)
 {
     int n;
     T element;
 
-    cout << "How many elements do you want to push?";
+    cout << "How many elements do you want to push? ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         is >> element;
-        queue.Push(element);
+        stack.Push(element);
     }
     return is;
 }
 
+template <class T> 
+Stack<T>::Stack(int stackCapacity) : Bag<T>(stackCapacity) {}
+
+template <class T> 
+Stack<T>::~Stack() {}
+
 template <class T>
-Queue<T>::Queue(int queueCapacity) : Bag<T>(queueCapacity) 
+T& Stack<T>::Top() const
 {
-    front = 0;
-    rear = 0;
+    if (IsEmpty()) throw "Stack is empty.";
+    return array[top];
 }
 
 template <class T>
-Queue<T>::~Queue() {}
-
-template <class T>
-int Queue<T>::Size() const
+void Stack<T>::Pop()
 {
-    return (rear - front + capacity) % capacity;
-}
-
-template <class T>
-void Queue<T>::Push(const T& x)
-{
-    if ((rear + 1) % capacity == front) { //resize 
-        T* newQu = new T[2 * capacity];
-        int start = (front + 1) % capacity;
-        if (start < 2)
-            copy(array + start, array + start + capacity - 1, newQu);
-        else {
-            copy(array +start, array + capacity, newQu);
-            copy(array, array + rear + 1, newQu + capacity - start);
-        }
-        front = 2  *capacity - 1;
-        rear = capacity - 2;
-        delete [] array;
-        array = newQu; 
-        capacity *= 2;
-    }
-    rear = (rear + 1) % capacity; 
-    array[rear] = x;
-}
-
-template <class T>
-void Queue<T>::Pop()
-{
-    // if (IsEmpty()) throw "Queue is empty, cannot delete";
-    front = (front + 1) % capacity;
-    array[front].~T(); // destructor for T
-}
-
-template <class T>
-inline T& Queue<T>::Front() const
-{
-    // if (IsEmpty()) throw "Queue is empty";
-    return array[(front + 1) % capacity];
-}
-
-template <class T>
-inline T& Queue<T>::Rear() const
-{
-    // if (IsEmpty()) throw "Queue is empty";
-    return array[rear];
+    if (IsEmpty()) throw "Stack is empty, cannot delete";
+    array[top--].~T();
 }
 
 int main()
 {
-    Queue<int> S1(1);
-    Queue<float> S2(1);
+    Stack<int> S1(1);
+    Stack<float> S2(1);
     int push;
     float pu;
     
     //int
-    cout << "type in int" << endl;
+    cout << "type in some int" << endl;
     cin >> S1;
     cout << "S1 = " << S1;
     cout << "The size of S1 is : " << S1.Size() << endl;
 	S1.Pop();
 	cout << "S1 after pop = " << S1;
-	cout << "What element do you wan't to put in S1? ";
+	cout << "What element do you want to put into S1? ";
     cin >> push;
     S1.Push(push);
     cout << "S1 = " << S1 << endl;
     
 	//float
-	cout << "type in float" << endl;
+	cout << "type in some float" << endl;
     cin >> S2;
     cout << "S2 = " << S2;
     cout << "The size of S2 is : " << S2.Size() << endl;
 	S2.Pop();
 	cout << "S2 after pop = " << S2;
-	cout << "What element do you wan't to put in S2? ";
+	cout << "What element do you want to put into S2? ";
     cin >> pu;
     S2.Push(pu);
     cout << "S2 = " << S2;
@@ -234,6 +188,6 @@ int main()
     return 0;
 }
 // int main()
-// {
+// { 
 //     return 0;
 // }

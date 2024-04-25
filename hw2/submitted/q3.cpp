@@ -104,8 +104,6 @@ class Deque : public Queue<T>
 	friend ostream& operator<<(ostream &os, Deque<U> &deque);
 	template <class U>
 	friend istream& operator>>(istream &is, Deque<U> &deque);
-	// template <class U>
-    // friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
 public:
     Deque(int dequeCapacity = 10);
     ~Deque();
@@ -131,7 +129,7 @@ istream& operator>>(istream &is, Deque<T> &deque)
     int n;
     T element;
 
-    cout << "How many elements do you want to push?";
+    cout << "How many elements do you want to push? ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         is >> element;
@@ -177,7 +175,6 @@ void Deque<T>::Pop_rear()
 }
 
 
-
 int main()
 {
     Deque<int> D1(1);
@@ -186,19 +183,19 @@ int main()
     float pu;
     
     //int
-    cout << "type in int" << endl;
+    cout << "type in some integer" << endl;
     cin >> D1;
     cout << "D1 = " << D1;
     cout << "The size of D1 is : " << D1.Size() << endl;
 	D1.Pop_front();
 	cout << "D1 after pop in the front = " << D1;
-	cout << "What element do you wan't to put in the front of D1? ";
+	cout << "What element do you want to put in the front of D1? ";
     cin >> push;
     D1.Push_front(push);
     cout << "D1 = " << D1;
     D1.Pop_rear();
 	cout << "D1 after pop at the rear = " << D1;
-	cout << "What element do you wan't to put at the back of D1? ";
+	cout << "What element do you want to put at the back of D1? ";
     cin >> push;
     D1.Push_rear(push);
     cout << "D1 = " << D1 << endl;
@@ -210,13 +207,13 @@ int main()
     cout << "The size of D2 is : " << D2.Size() << endl;
 	D2.Pop_front();
 	cout << "D2 after pop in the front = " << D2;
-	cout << "What element do you wan't to put in the front of D2? ";
+	cout << "What element do you want to put in the front of D2? ";
     cin >> pu;
     D2.Push_front(pu);
     cout << "D2 = " << D2;
     D2.Pop_rear();
 	cout << "D2 after pop at the rear = " << D2;
-	cout << "What element do you wan't to put at the back of D2? ";
+	cout << "What element do you want to put at the back of D2? ";
     cin >> pu;
     D2.Push_rear(pu);
     cout << "D2 = " << D2 << endl;

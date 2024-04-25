@@ -1,6 +1,109 @@
 #include <iostream>
 using namespace std;
 
+/* Stack */
+template <class T>
+class Stack
+{   
+    template <class U>
+	friend ostream& operator<<(ostream &os, Stack<U> &stack);
+	template <class U>
+	friend istream& operator>>(istream &is, Stack<U> &stack);
+	template <class U>
+    friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
+public:
+    Stack (int stackCapacity = 10);
+    ~Stack();
+    bool IsEmpty() const;
+    void Push(const T& item);
+    void Pop();
+    T& Top() const;
+private:
+    int top;
+    int capacity;
+    T* stack;
+};
+
+template <class T>
+ostream& operator<<(ostream &os, Stack<T> &stack)
+{
+    os << "Stack: ( " << stack.array[0];
+    for (int i = 1; i <= stack.top; i++)
+        os << ", " << stack.array[i];
+    os << " )" << endl;
+    return os;
+}
+
+template <class T>
+istream& operator>>(istream &is, Stack<T> &stack)
+{
+    int n;
+    T element;
+
+    cout << "How many elements do you want to push?";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        is >> element;
+        stack.Push(element);
+    }
+    return is;
+}
+
+template <class U>
+void ChangeSize1D(U* &a, const int oldSize, const int newSize)
+{
+    if (newSize < 0) throw "New length must be >= 0";
+    U *temp = new U[newSize];
+    int number = min(oldSize, newSize);
+    copy(a, a + number, temp);
+    delete []a;
+    a = temp;
+}
+
+template <class T> 
+Stack<T>::Stack(int stackCapacity):capacity(stackCapacity)
+{
+    if (capacity < 1) throw "Stack capacity must be > 0";
+    stack = new T[capacity];
+    top = -1;
+}
+
+template <class T> 
+Stack<T>::~Stack() 
+{
+    delete [] stack;
+}
+
+template <class T>
+bool Stack<T>::IsEmpty() const
+{
+    return top == -1;
+}
+
+template <class T>
+void Stack<T>::Push(const T& item)
+{// add x to stack
+    if (top == capacity - 1) {
+        ChangeSize1D (stack, capacity, 2 * capacity);
+        capacity *= 2;
+    }
+    stack[++top] = item;
+}
+
+template <class T>
+void Stack<T>::Pop()
+{
+    if (IsEmpty()) throw "Stack is empty, cannot delete";
+    stack[top--].~T();
+}
+
+template <class T>
+T& Stack<T>::Top() const
+{
+    if (IsEmpty()) throw "Stack is empty.";
+    return stack[top];
+}
+
 /* Queue */
 template <class T>
 class Queue
@@ -23,6 +126,7 @@ public:
     T& Rear() const;
     bool operator==(const Queue<T>& q) const; // (c)
     Queue<T> Merge(Queue<T> q);               // (d)
+    Queue<T> ReverseQueue();                  // (e)
 private:
     T* queue;
     int front, rear;
@@ -78,12 +182,14 @@ bool Queue<T>::IsEmpty() const
     return (Size() == 0);
 }
 
+// (a)
 template <class T>
 int Queue<T>::Size() const
 {
     return (rear - front + capacity) % capacity;
 }
 
+// (b)
 template <class T>
 int Queue<T>::Capacity() const
 {
@@ -134,6 +240,7 @@ inline T& Queue<T>::Rear() const
     return queue[rear];
 }
 
+// (c)
 template <class T>
 bool Queue<T>::operator==(const Queue<T>& q) const
 {
@@ -145,21 +252,13 @@ bool Queue<T>::operator==(const Queue<T>& q) const
     return true;
 }
 
+// (d)
 template <class T>
 Queue<T> Queue<T>::Merge(Queue<T> q)
 {
     int Pos, qPos;
     int newCap = Size() + q.Size() + 1;
     Queue<T> newQueue(newCap + 1);
-
-    // Pos = (front + 1) % capacity;
-    // qPos = (q.front + 1) % q.capacity;
-    // while (Pos != (rear + 1) % capacity && qPos != (q.rear + 1) % q.capacity) {
-    //     newQueue.Push(queue[Pos]);
-    //     newQueue.Push(q.queue[qPos]);
-    //     Pos = (Pos + 1) % capacity;
-    //     qPos = (qPos + 1) % q.capacity;
-    // }
 
     for (Pos = (front + 1) % capacity, qPos = (q.front + 1) % q.capacity;
          Pos != (rear + 1) % capacity && qPos != (q.rear + 1) % q.capacity;
@@ -182,6 +281,28 @@ Queue<T> Queue<T>::Merge(Queue<T> q)
     return newQueue;
 }
 
+// (e)
+template <class T>
+Queue<T> Queue<T>::ReverseQueue()
+{
+    Queue<T> newQueue(Size() + 1);
+    Stack<T> tempStack(Size() + 1);
+
+    // Push all elements in the original queue to the stack
+    for (int i = (front + 1) % capacity; i != (rear + 1) % capacity; ) {
+        tempStack.Push(queue[i]);
+        i = (i + 1) % capacity;
+    }
+
+    // Pop all elements from the stack to the new queue
+    while (!tempStack.IsEmpty()) {
+        newQueue.Push(tempStack.Top());
+        tempStack.Pop();
+    }
+
+    return newQueue;
+}
+
 template <class T>
 ostream& operator<<(ostream &os, Queue<T> &queue)
 {
@@ -200,7 +321,7 @@ istream& operator>>(istream &is, Queue<T> &queue)
     int n;
     T element;
 
-    cout << "How many elements do you want to push?";
+    cout << "How many elements do you want to push? ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         is >> element;
@@ -210,47 +331,13 @@ istream& operator>>(istream &is, Queue<T> &queue)
 }
 
 
-int main()
+int main() 
 {
-	Queue<int> Q1(1), Q2(1), Q3(1);
-	int push;
-	
-	cin >> Q1;
-	cin >> Q2;
-
-	cout << "Q1 = " << Q1;
-	cout << "The capacity of Q1 is : " << Q1.Capacity() << endl;
-
-	cout << "Q2 = " << Q2;
-	if (Q2.IsEmpty()) cout << "The queue is empty";
-    else cout << "The size of Q2 is : " << Q2.Size() << endl;
-
-    if (Q1 == Q2) cout << "Q1 and Q2 are the same" << endl;
-    else cout << "Q1 and Q2 are different" << endl;
-
-    Q3 = Q1.Merge(Q2);
-    cout << "Q1 merge Q2 = " << Q3;
-
-    cout << "What num do you wan't to put in Q1? ";
-    cin >> push;
-    Q1.Push(push);
-    cout << "Q1 = " << Q1;
-
-    cout << "last element of Q1 is : ";
-	cout << Q1.Rear() << endl;
-
-	cout << "first element of Q2 is : ";
-	cout << Q2.Front() << endl;
-
-	Q2.Pop();
-    cout << "Q2 after pop = " << Q2;
-
-    Q3 = Q1.Merge(Q2);
-    cout << "Q1 merge Q2 = " << Q3;
+    Queue<int> Q1(1), Q2(1);
     
+    cin >> Q1;
+    cout << "Q1 = " << Q1;
+    Q2 = Q1.ReverseQueue();
+    cout << "reverse of Q1 is " << Q2;
     return 0;
 }
-// int main()
-// {
-//     return 0;
-// }

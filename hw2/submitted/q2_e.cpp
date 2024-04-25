@@ -321,7 +321,7 @@ istream& operator>>(istream &is, Queue<T> &queue)
     int n;
     T element;
 
-    cout << "How many elements do you want to push?";
+    cout << "How many elements do you want to push? ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         is >> element;

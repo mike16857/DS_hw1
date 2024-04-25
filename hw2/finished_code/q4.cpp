@@ -17,7 +17,7 @@ struct Items
 };
 
 int maze[14][17]; // for the whole maze
-int mark[14][17]; // to mark where it has been
+int mark[14][17]; // array that marks where the probe has been to
 
 /* Stack */
 template <class T>
@@ -25,8 +25,6 @@ class Stack
 {   
     template <class U>
 	friend ostream& operator<<(ostream &os, Stack<U> &stack);
-	template <class U>
-	friend istream& operator>>(istream &is, Stack<U> &stack);
 	template <class U>
     friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
 public:
@@ -37,35 +35,10 @@ public:
     void Pop();
     T& Top() const;
 private:
+    T* stack;
     int top;
     int capacity;
-    T* stack;
 };
-
-template <class T>
-ostream& operator<<(ostream &os, Stack<T> &stack)
-{
-    os << "Stack: ( " << stack.array[0];
-    for (int i = 1; i <= stack.top; i++)
-        os << ", " << stack.array[i];
-    os << " )" << endl;
-    return os;
-}
-
-template <class T>
-istream& operator>>(istream &is, Stack<T> &stack)
-{
-    int n;
-    T element;
-
-    cout << "How many elements do you want to push?";
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        is >> element;
-        stack.Push(element);
-    }
-    return is;
-}
 
 template <class U>
 void ChangeSize1D(U* &a, const int oldSize, const int newSize)
@@ -122,6 +95,47 @@ T& Stack<T>::Top() const
     return stack[top];
 }
 
+template <class T>
+ostream& operator<<(ostream &os, Stack<T> &stack)
+{
+   int i;
+    
+    os << "total steps = " << stack.top + 2 << endl << endl;
+    for (i = 0; i < stack.top + 1; i++) {
+        os << "Step" << i + 1 << " : " << stack.stack[i] << endl;
+    }
+    os << "Step" << i + 1 << " : ";
+    
+    return os;
+}
+
+ostream& operator<<(ostream &os, Items &item)
+{
+    os << "(" << item.x << ", " << item.y << ", ";
+    
+    switch (item.dir) {
+        case N: os << "N";
+            break;
+        case NE: os << "NE";
+            break;
+        case E: os <<"E";
+            break;
+        case SE: os << "SE";
+            break;
+        case S: os << "S";
+            break;
+        case SW: os << "SW";
+            break;
+        case W: os << "W";
+            break;
+        case NW: os << "NW";
+            break;
+        default: break;
+    };
+    os << ")";
+    
+    return os;
+}
 
 void Path(const int m, const int p)
 {   // 輸出迷宮的一個路徑（如果有的話）； maze[0][i] = maze[m+1][i] = maze[j][0] = maze[j][p+1] = 1, 0  i  p+1, 0  j  m+1。從 (1, 1) 開始
@@ -139,8 +153,19 @@ void Path(const int m, const int p)
             int g = i + ::move[d].di; int h = j + ::move[d].dj;
             if ((g == m) && (h == p)) { // 抵達出口
                 cout << stack;                  // 輸出路徑
-                cout << i << " " << j << endl;  // 路徑上的上兩個方塊
-                cout << m << " " << p << endl;
+                cout << "(" << i << ", " << j << ", ";
+				switch (d) {
+        			case N: cout << "N"; break;
+        			case NE: cout << "NE"; break;
+        			case E: cout <<"E"; break;
+        			case SE: cout << "SE"; break;
+        			case S: cout << "S"; break;
+					case SW: cout << "SW"; break;
+        			case W: cout << "W"; break;
+        			case NW: cout << "NW"; break;
+        			default: break;
+    			};
+    			cout << ")";
                 return;
             }
             if ((!maze[g][h]) && (!mark[g][h])) {   // 新位置
@@ -155,7 +180,32 @@ void Path(const int m, const int p)
     cout << "No path in maze." << endl;
 }
 
-int main()
-{
-
+int main() {
+    FILE *MAZE;
+    int m, p;
+    int i, j;
+    MAZE = fopen("maze.txt", "r");          				// open the file
+    
+    fscanf(MAZE, "%d", &m);                 				// read m
+    fscanf(MAZE, "%d", &p);                 				// read p
+    for (i = 0; i < m + 2; i++){							// edge
+        for (j = 0; j < p + 2; j++) {
+            if (i == 0 || i == m + 1) maze[i][j] = 1;       // read in the maze
+            else if (j == 0 || j == p + 1) maze[i][j] = 1;
+            else fscanf(MAZE, "%d", &maze[i][j]);
+        }
+    }
+    
+    cout << "The maze is : " << endl;       				// first print the maze
+    for (i = 1; i < m + 1; i++) {
+        for (j = 1; j < p + 1 ; j++) {
+            cout << maze[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    
+    Path(m, p);     // find a path
+    
+    return 0;
 }
