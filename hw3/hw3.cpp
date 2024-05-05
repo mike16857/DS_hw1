@@ -1,3 +1,4 @@
+/* 1. */
 template <class T>
 void CircularList<T>::length() 
 {
@@ -79,4 +80,134 @@ void CircularList<T>::deleteBack()
         beforeNode->link = first;
         delete last;
     }
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+/* 2. */
+
+template <class T>
+void Chain<T>::length() 
+{
+    int count = 0;
+    ChainNode<T> *tmp = first;
+    while (tmp != NULL) {
+        count++;
+        tmp = tmp->link;
+    }
+    return count;
+}
+
+template <class T> 
+void Chain<T>::changeKthNode(int k, T element) 
+{
+    ChainNode<T> *tmp = first;
+    for (int i = 1; i < k; i++) {
+        tmp = tmp->link;
+    }
+    tmp->data = element;
+}
+
+template <class T>
+void Chain<T>::insesertBeforeKthNode(int k, T element) 
+{
+    ChainNode<T> *newNode = new ChainNode<T>(element);
+    if (k == 1) {
+        newNode->link = first;
+        first = newNode;
+    } 
+    else {
+        ChainNode<T> *tmp = first;
+        for (int i = 1; i < k - 1; i++) {
+            tmp = tmp->link;
+        }
+        newNode->link = tmp->link;
+        tmp->link = newNode;
+    }
+}
+
+template <class T>
+void Chain<T>::deleteOdd() 
+{
+    ChainNode<T> *tmp = first;
+    ChainNode<T> *toDel;
+    while (tmp != NULL) {
+        toDel = tmp;
+        tmp = tmp->link;
+        delete toDel;
+        if (tmp != NULL) {
+            tmp = tmp->link;
+        }
+    }
+}
+
+template <class T>
+void Chain<T>::divideMid(Chain<T> &subList)
+{
+    ChainNode<T> *tmp = first;
+    int length = length();
+    for (int i = 1; i < (length + 1) / 2; i++) {
+        tmp = tmp->link;
+    }
+    subList.first = tmp->link;
+    tmp->link = NULL;
+}
+
+template <class T>
+void Chain<T>::split(ChainNode<T> *split) 
+{
+    ChainNode<T> *tmp = first;
+    while (tmp->link != split) {
+        tmp = tmp->link;
+    }
+    tmp->link = NULL;
+}
+
+template <class T>
+void Chain<T>::merge(Chain<T> &List2)
+{
+    ChainNode<T> *curr1 = first;
+    ChainNode<T> *curr2 = List2.first;
+    ChainNode<T> *next1, *next2;
+
+    while (curr1->link != NULL && curr2->link != NULL) {
+        next1 = curr1->link;
+        next2 = curr2->link;
+        curr1->link = curr2;
+        curr2->link = next1;
+        curr1 = next1;
+        curr2 = next2;
+    }
+
+    if (curr1->link == NULL) {
+        curr1->link = curr2;
+    } 
+    else {
+        curr2->link = curr1;
+    }
+}
+
+
+/* 6. */
+
+template <class T>
+void Chain<T>::insert(T x, ChainNode<T> *p) 
+{
+    ChainIterator<T> iterator = ChainIterator<T>(p);
+    ChainNode<T> *newNode = new ChainNode<T>(x);
+    newNode->link = iterator.current->link;
+    --iterator; // move iterator to the previous node
+    iterator.current->link = newNode;
+}
+
+template <class T>
+void Chain<T>::remove(ChainNode<T> *p) 
+{
+    ChainIterator<T> iterator = ChainIterator<T>(p);
+    ChainNode<T> *toDel;
+    --iterator; // move iterator to the previous node
+    toDel = iterator.current->link;
+    iterator.current->link = toDel->link;
+    delete toDel;
 }
