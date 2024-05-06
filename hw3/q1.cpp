@@ -4,14 +4,20 @@ using namespace std;
 
 template <class T> class Chain;  // 前向宣告
 
+
 template <class T>
 class ChainNode 
 {
-    friend class Chain <T>;
+    friend class Chain<T>;
+    template <class T>
+    friend ostream& operator<<(ostream& os, Chain<T>& c);
+public:
+    ChainNode(int element = 0, ChainNode<T>* next = 0):data(element), link(next) {}
 private:
 	T data;
 	ChainNode<T>* link;
 };
+
 
 template <class T>
 class Chain 
@@ -32,7 +38,7 @@ public:
     T& Set(int index, const T& e);
     int IndexOf(const T& e) const;
     void Delete(int index);
-    void Insert(int index, const T& e);
+    void Insert(int index, const T& e); // c
     void Concatenate(Chain<T>& b);
     void Reverse();
     void Delete(Position p);
