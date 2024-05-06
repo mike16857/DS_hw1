@@ -137,6 +137,9 @@ void Chain<T>::deleteOdd()
     while (tmp != NULL) {
         toDel = tmp->link;
         tmp->link = toDel->link;
+        if (toDel == NULL) {
+            break;  // if number of nodes is even
+        }
         delete toDel;
         tmp = tmp->link;
     }
