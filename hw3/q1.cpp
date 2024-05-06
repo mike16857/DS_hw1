@@ -1,9 +1,10 @@
 #include <iostream>
 using namespace std;
 
-template < class T > class Chain;  // 前向宣告
 
-template < class T >
+template <class T> class Chain;  // 前向宣告
+
+template <class T>
 class ChainNode 
 {
     friend class Chain <T>;

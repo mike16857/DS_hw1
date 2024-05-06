@@ -9,7 +9,7 @@ class DblListNode
     friend class DblList;
 private:
    int data;
-   DblListNode * left, * right;   
+   DblListNode *left, *right;   
 };
 
 class DblList 
