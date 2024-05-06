@@ -1,4 +1,4 @@
-/* 1. */
+/* 2. */
 template <class T>
 void CircularList<T>::length() 
 {
@@ -85,7 +85,7 @@ void CircularList<T>::deleteBack()
 
 
 ////////////////////////////////////////////////////////////////////////////
-/* 2. */
+/* 1. */
 
 template <class T>
 void Chain<T>::length() 
@@ -130,15 +130,15 @@ void Chain<T>::insesertBeforeKthNode(int k, T element)
 template <class T>
 void Chain<T>::deleteOdd() 
 {
-    ChainNode<T> *tmp = first;
+    ChainNode<T> *tmp = first->link;
     ChainNode<T> *toDel;
+    delete first;
+    first = tmp;
     while (tmp != NULL) {
-        toDel = tmp;
-        tmp = tmp->link;
+        toDel = tmp->link;
+        tmp->link = toDel->link;
         delete toDel;
-        if (tmp != NULL) {
-            tmp = tmp->link;
-        }
+        tmp = tmp->link;
     }
 }
 
@@ -184,7 +184,9 @@ void Chain<T>::merge(Chain<T> &List2)
         curr1->link = curr2;
     } 
     else {
-        curr2->link = curr1;
+        next1 = curr1->link;
+        curr1->link = curr2;
+        curr2->link = next1;
     }
 }
 
