@@ -23,12 +23,14 @@ private:
     MatrixNode(bool, Triple*); // 建構子
 };
 
+
 MatrixNode::MatrixNode(bool b, Triple *t)  // 建構子
 {
     head = b;
     if (b) {right = down = this;} // 列/行的標頭節點
     else triple = *t; // 標頭節點串列的元素節點或標頭節點
 }
+
 
 class Matrix
 {

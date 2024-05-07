@@ -9,6 +9,8 @@
         "iostream": "cpp",
         "stdexcept": "cpp",
         "functional": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "type_traits": "cpp",
+        "iosfwd": "cpp"
     }
 }
