@@ -7,18 +7,18 @@ template <class T> class HeaderCircularList;
 class Polynomial;
 
 
-struct Term 
+struct Term
 {
-    int coef;
+    double coef;
     int exp;
-    Term Set(int c, int e) { coef = c; exp = e; return *this; }
+    Term Set(double c, int e) { coef = c; exp = e; return *this; }
 };
 
 
 template <class T>
 class ChainNode
 {
-    friend class HeaderCircularList;
+    friend class HeaderCircularList<T>;
     friend class Polynomial;
     template <class U>
     friend ostream &operator<<(ostream &os, HeaderCircularList<U> &L);
@@ -26,8 +26,8 @@ class ChainNode
 	// friend istream &operator>>(istream& is, HeaderCircularList<U> &L);
     friend istream &operator>>(istream &is, Polynomial &polynomial);
     friend ostream &operator<<(ostream &os, Polynomial &polynomial);
-public:
-    ChainNode(const T& e = 0, ChainNode<T>* next = 0): data(e), link(next) {}
+// public:
+//     ChainNode(const T& e, ChainNode<T>* next = 0): data(e), link(next) {}
 private:
     T data;
     ChainNode<T>* link;
@@ -49,7 +49,7 @@ public:
 	{
 		head = new ChainNode<T>;
         head->link = head;
-        av = 0;
+        av = NULL;
 	};
     ~HeaderCircularList();
     int length();
@@ -68,7 +68,7 @@ template <class T>
 HeaderCircularList<T>::~HeaderCircularList()
 {
     ChainNode<T> *last = head->link;
-	
+
 	while (last->link != head) last = last->link;
 	if (last) {
 		ChainNode<T>* x = last->link;
@@ -79,7 +79,7 @@ HeaderCircularList<T>::~HeaderCircularList()
 }
 
 template <class T>
-int HeaderCircularList<T>::length() 
+int HeaderCircularList<T>::length()
 {
     int count = 0;
     ChainNode<T> *tmp = head;
@@ -91,7 +91,7 @@ int HeaderCircularList<T>::length()
 }
 
 template <class T>
-void HeaderCircularList<T>::InsertFront(T element) 
+void HeaderCircularList<T>::InsertFront(T element)
 {
     ChainNode<T> *newNode = GetNode();
     newNode->data = element;
@@ -100,7 +100,7 @@ void HeaderCircularList<T>::InsertFront(T element)
 }
 
 template <class T>
-void HeaderCircularList<T>::InsertBack(T element) 
+void HeaderCircularList<T>::InsertBack(T element)
 {
     ChainNode<T> *newNode = GetNode();
     ChainNode<T> *tmp = head;
@@ -113,7 +113,7 @@ void HeaderCircularList<T>::InsertBack(T element)
 }
 
 template <class T>
-void HeaderCircularList<T>::DeleteFirst() 
+void HeaderCircularList<T>::DeleteFirst()
 {
     ChainNode<T> *toDel = head->link;
     head->link = toDel->link;
@@ -121,7 +121,7 @@ void HeaderCircularList<T>::DeleteFirst()
 }
 
 template <class T>
-void HeaderCircularList<T>::DeleteBack() 
+void HeaderCircularList<T>::DeleteBack()
 {
     ChainNode<T> *tmp = head;
     ChainNode<T> *toDel;
@@ -159,7 +159,7 @@ template <class T>
 ostream &operator<<(ostream &os, HeaderCircularList<T> &L)
 {
     ChainNode<T>* temp = L.head->link;
-    
+
 	os << temp->data;
 	temp = temp->link;
 	while(temp != L.head){
@@ -167,7 +167,7 @@ ostream &operator<<(ostream &os, HeaderCircularList<T> &L)
 		temp = temp->link;
 	}
     os << endl;
-    
+
     return os;
 }
 
@@ -176,7 +176,7 @@ ostream &operator<<(ostream &os, HeaderCircularList<T> &L)
 // {
 //     int num;
 //     int temp;
-    
+
 // 	cout << "How many element do you want to plug in : ";
 // 	is >> num;
 // 	cout << "What do you want to plug in : ";
@@ -184,7 +184,7 @@ ostream &operator<<(ostream &os, HeaderCircularList<T> &L)
 // 		is >> temp;
 // 		L.InsertBack(temp);
 // 	}
-	
+
 //     return is;
 // }
 
@@ -207,113 +207,148 @@ private:
     HeaderCircularList<Term> poly;
 };
 
-Polynomial::~Polynomial() //
+// (e)
+Polynomial::~Polynomial()
 {
-    poly.~HeaderCircularList();
+    // poly.~HeaderCircularList();
+    while(poly.head->link != poly.head) poly.DeleteFirst();
+
+    return;
 }
 
-Polynomial::Polynomial(const Polynomial& a) //
+// (c)
+Polynomial::Polynomial(const Polynomial& a)
 {
-    ChainNode<Term> *temp = a.poly.head->link;
-    while (temp != a.poly.head) {
-        poly.InsertBack(temp->data);
+    // ChainNode<Term> *temp = a.poly.head->link;
+    // while (temp != a.poly.head) {
+    //     poly.InsertBack(temp->data);
+    //     temp = temp->link;
+    // }
+    Term doc;
+    Polynomial* tempPoly = new Polynomial;
+    ChainNode<Term>* temp = a.poly.head->link;
+
+    while (temp != a.poly.head){
+        tempPoly->poly.InsertBack(doc.Set(temp->data.coef, temp->data.exp));
         temp = temp->link;
     }
+    this->poly = tempPoly->poly;
+
+    return;
 }
 
-const Polynomial &Polynomial::operator=(const Polynomial &a) //
+// (d)
+const Polynomial &Polynomial::operator=(const Polynomial &a)
 {
-    if (&a != this) {
-        poly.~HeaderCircularList();
-        ChainNode<Term> *temp = a.poly.head->link;
-        while (temp != a.poly.head) {
-            poly.InsertBack(temp->data);
-            temp = temp->link;
-        }
+    // if (&a != this) {
+    //     poly.~HeaderCircularList();
+    //     ChainNode<Term> *temp = a.poly.head->link;
+    //     while (temp != a.poly.head) {
+    //         poly.InsertBack(temp->data);
+    //         temp = temp->link;
+    //     }
+    // }
+    // return *this;
+    Term doc;
+    Polynomial* tempPoly = new Polynomial;
+    ChainNode<Term>* temp = a.poly.head->link;
+
+    while (temp != a.poly.head){
+        tempPoly->poly.InsertBack(doc.Set(temp->data.coef, temp->data.exp));
+        temp = temp->link;
     }
+    this->poly = tempPoly->poly;
+
     return *this;
 }
 
+// (f)
 Polynomial Polynomial::operator+(const Polynomial& b) const
 {
     Term temp;
     ChainNode<Term> *ai = poly.head->link;
     ChainNode<Term> *bi = b.poly.head->link;
     Polynomial c;
+    double sum;
 
     while (ai != poly.head && bi != b.poly.head) {
         if (ai->data.exp == bi->data.exp) {
-            int sum = ai->data.coef + bi->data.coef;
-            if (sum) c.poly.InsertBack (temp.Set(sum, ai->data.exp));
+            sum = ai->data.coef + bi->data.coef;
+            if (sum) c.poly.InsertBack(temp.Set(sum, ai->data.exp));
             ai = ai->link;
             bi = bi->link;
-        } 
+        }
         else if (ai->data.exp < bi->data.exp) {
             c.poly.InsertBack(temp.Set(bi->data.coef, bi->data.exp)) ;
             bi = bi->link;
-        } 
+        }
         else {
             c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp)) ;
             ai = ai->link;
         }
     }
 
-    while (ai != poly.head) { 
-        c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp)); 
-        ai = ai->link; 
+    while (ai != poly.head) {
+        c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp));
+        ai = ai->link;
     }
-    while (bi != b.poly.head) { 
-        c.poly.InsertBack (temp.Set(bi->data.coef, bi->data.exp)); 
+    while (bi != b.poly.head) {
+        c.poly.InsertBack (temp.Set(bi->data.coef, bi->data.exp));
         bi = bi->link;
     }
     return c;
 }
 
+// (g)
 Polynomial Polynomial::operator-(const Polynomial& b) const
 {
     Term temp;
     ChainNode<Term> *ai = poly.head->link;
     ChainNode<Term> *bi = b.poly.head->link;
     Polynomial c;
+    double sum;
 
     while (ai != poly.head && bi != b.poly.head) {
         if (ai->data.exp == bi->data.exp) {
-            int sum = ai->data.coef - bi->data.coef;
-            if (sum) c.poly.InsertBack (temp.Set(sum, ai->data.exp));
+            sum = ai->data.coef - bi->data.coef;
+            if (sum) c.poly.InsertBack(temp.Set(sum, ai->data.exp));
             ai = ai->link;
             bi = bi->link;
-        } 
+        }
         else if (ai->data.exp < bi->data.exp) {
-            c.poly.InsertBack(temp.Set(-bi->data.coef, bi->data.exp)) ;
+            c.poly.InsertBack(temp.Set((-1) * bi->data.coef, bi->data.exp)) ;
             bi = bi->link;
-        } 
+        }
         else {
             c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp)) ;
             ai = ai->link;
         }
     }
 
-    while (ai != poly.head) { 
-        c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp)); 
-        ai = ai->link; 
+    while (ai != poly.head) {
+        c.poly.InsertBack(temp.Set(ai->data.coef, ai->data.exp));
+        ai = ai->link;
     }
-    while (bi != b.poly.head) { 
-        c.poly.InsertBack (temp.Set(-bi->data.coef, bi->data.exp)); 
+    while (bi != b.poly.head) {
+        c.poly.InsertBack(temp.Set((-1) * bi->data.coef, bi->data.exp));
         bi = bi->link;
     }
     return c;
 }
 
+// (h)
 Polynomial Polynomial::operator*(const Polynomial& b) const
 {
     Term temp;
     ChainNode<Term> *ai = poly.head->link;
     ChainNode<Term> *bi = b.poly.head->link;
-    Polynomial c;
+    Polynomial c, tempPoly;
 
     while (ai != poly.head) {
         while (bi != b.poly.head) {
-            c.poly.InsertBack(temp.Set(ai->data.coef * bi->data.coef, ai->data.exp + bi->data.exp));
+            tempPoly.poly.InsertBack(temp.Set(ai->data.coef * bi->data.coef, ai->data.exp + bi->data.exp));
+            c = c + tempPoly;
+            tempPoly.poly.DeleteFirst();
             bi = bi->link;
         }
         ai = ai->link;
@@ -327,11 +362,12 @@ void Polynomial::Set(Term temp)
     poly.InsertBack(temp);
 }
 
+// (i)
 double Polynomial::Evaluate(double x) const
 {
     double sum = 0;
     ChainNode<Term> *temp = poly.head->link;
-    
+
     while (temp != poly.head) {
         sum += temp->data.coef * pow(x, temp->data.exp);
         temp = temp->link;
@@ -339,27 +375,30 @@ double Polynomial::Evaluate(double x) const
     return sum;
 }
 
-istream &operator>>(istream &is, Polynomial &polynomial) //
+// (a)
+istream &operator>>(istream &is, Polynomial &polynomial)
 {
     int num;
-    int coef, exp;
+    int exp;
+    double coef;
     Term temp;
-    
-    cout << "How many term do you want to plug in : ";
+
+    cout << "How many terms do you want to plug in : ";
     is >> num;
     cout << "What do you want to plug in : ";
     for(int i = 0; i < num; i++){
         is >> coef >> exp;
         polynomial.Set(temp.Set(coef, exp));
     }
-    
+
     return is;
 }
 
-ostream &operator<<(ostream &os, Polynomial &polynomial) //
+// (b)
+ostream &operator<<(ostream &os, Polynomial &polynomial)
 {
     ChainNode<Term> *temp = polynomial.poly.head->link;
-    
+
     os << temp->data.coef << "x^" << temp->data.exp;
     temp = temp->link;
     while(temp != polynomial.poly.head){
@@ -367,7 +406,7 @@ ostream &operator<<(ostream &os, Polynomial &polynomial) //
         temp = temp->link;
     }
     os << endl;
-    
+
     return os;
 }
 
@@ -376,30 +415,30 @@ int main()
 {
     Polynomial a, b, c;
     double x;
-    
+
     cout << "Enter polynomial A : " << endl;
     cin >> a;
     cout << "Enter polynomial B : " << endl;
     cin >> b;
     cout << "Enter the value of x : ";
     cin >> x;
-    
-    cout << " A(x) =  " << a;
+
+    cout << " A(x) = " << a;
     cout << " B(x) = " << b;
 
     c = a + b;
     cout << " A + B = " << c;
 
     c = a - b;
-    cout << " A - B =  " << c;
+    cout << " A - B = " << c;
 
     c = a * b;
-    cout << " A * B =  " << c;
+    cout << " A * B = " << c;
 
-    cout << " A(x = " << x << " ) = " << a.Evaluate(x) << endl;
-    cout << " B(x = " << x << " ) = " << b.Evaluate(x) << endl;
+    cout << " A(x = " << x << ") = " << a.Evaluate(x) << endl;
+    cout << " B(x = " << x << ") = " << b.Evaluate(x) << endl;
 
-    cout << " C(x = " << x << " ) = A(x = " << x <<" ) * B(x = "<< x <<" )" << c.Evaluate(x) << endl;
-    
+    cout << " C(x = " << x << ") = A(x = " << x << ") * B(x = "<< x <<") = " << c.Evaluate(x) << endl;
+
     return 0;
 }

@@ -12,6 +12,7 @@
         "ostream": "cpp",
         "type_traits": "cpp",
         "iosfwd": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "new": "cpp"
     }
 }
