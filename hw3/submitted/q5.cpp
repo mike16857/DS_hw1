@@ -10,8 +10,6 @@ class DblListNode
     friend ostream& operator<<(ostream& os, DblList &list);
     friend istream& operator>>(istream& is, DblList &list);
     friend class DblList;
-// public:
-    // DblListNode(int x, DblListNode *l, DblListNode *r):data(x), left(l), right(r) {}
 private:
     int data;
     DblListNode *left, *right;   
@@ -183,18 +181,6 @@ int main()
     cout << "Pop the last element of list1: ";
     list1.PopBack();
     cout << list1 << endl;
-
-    // cout << "What number do you want to insert at the front of list1? ";
-    // cin >> x;
-    // list1.PushFront(x);
-    // cout << list1 << endl;
-
-    // cout << "What number do you want to insert at the back of list1? ";
-    // cin >> x;
-    // list1.PushBack(x);
-    // cout << list1 << endl;
-
-    // cout << "End of program\n";
 
     return 0;
 }

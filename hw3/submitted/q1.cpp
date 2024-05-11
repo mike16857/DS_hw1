@@ -15,8 +15,6 @@ class ChainNode
     friend class LinkedQueue<T>;
     template <class U>
     friend ostream& operator<<(ostream& os, Chain<U>& c);
-// public:
-//     ChainNode(int element = 0, ChainNode<T>* next = 0):data(element), link(next) {}
 private:
 	T data;
 	ChainNode<T>* link;
@@ -55,8 +53,6 @@ public:
     Chain<T> deconcatenate(ChainNode<T>* p);        // (f)
     void merge(Chain<T>& b);                        // (g)
     int evaluate();                                 // (j)
-
-    // ChainNode<T> *demo = first->link->link;
 
 	class ChainIterator
     {
@@ -589,9 +585,9 @@ int main()
 	    cin >> temp;
 		L2.InsertBack(temp);
 	}
-    // cout << "List1: " << endl;
+    
     cout << "L1 = " << L1;
-    // cout << "List2: " << endl;
+    
     cout << "L2 = " << L2;
 
     
@@ -665,14 +661,6 @@ int main()
     cout << L1;
     cout << "subList: " << subList;
     cout << endl;
-
-    // (f) not done yet
-    // ChainNode<int>* p = L1.demo;
-    // cout << "L1 after deconcatenating at 3th node: ";
-    // Chain<int> List2 = L1.deconcatenate(p);
-    // cout << L1;
-    // cout << "List2: " << List2;
-    // cout << endl;
 
     // (g)
     cout << "L1 after merging with subList: ";

@@ -100,26 +100,6 @@ void HeaderCircularList<T>::DeleteBack()
     delete toDel;
 }
 
-// template <class T>
-// void HeaderCircularList<T>::deleteOdd() 
-// { 
-//     int times = (length() + 1) / 2;
-// 	ChainNode<T>* tmp;
-// 	ChainNode<T>* toDel;
-	
-// 	if (first == NULL) throw "The List is empty, cannot delete.";
-// 	DeleteFirst();
-// 	times--;
-// 	tmp = first;
-
-// 	for (int i = 0; i < times; i++) {
-// 		toDel = tmp->link;
-// 		tmp->link = tmp->link->link;
-// 		delete toDel; 
-// 		tmp = tmp->link;
-// 	} 
-// }
-
 template <class T>
 void HeaderCircularList<T>::deleteOdd() 
 { 
@@ -186,46 +166,6 @@ HeaderCircularList<T> HeaderCircularList<T>::merge(HeaderCircularList<T> &L2)
 
     return L3;
 }
-
-// template <class T>
-// HeaderCircularList<T> HeaderCircularList<T>::merge(HeaderCircularList<T> &L2) 
-// {   
-//     HeaderCircularList<T> L3;
-//     ChainNode<T> *curr1 = head->link;
-//     ChainNode<T> *curr2 = L2.head->link;
-//     ChainNode<T> *next1, *next2;
-
-//     while (curr1->link != head && curr2->link != L2.head) {
-//         next1 = curr1->link;
-//         next2 = curr2->link;
-//         curr1->link = curr2;
-//         curr2->link = next1;
-//         curr1 = next1;
-//         curr2 = next2;
-//     }
-
-//     // if L1 is shorter
-//     if (curr1->link == head) { 
-//         curr1->link = curr2;
-//         while (curr2->link != L2.head) {
-//             curr2 = curr2->link;
-//         }
-//         curr2->link = head;    // wrap around
-//     }
-//     // if L2 is shorter
-//     else {                     
-//         next1 = curr1->link;
-//         curr1->link = curr2;
-//         curr2->link = next1;
-//         while (next1->link != head) {
-//             next1 = next1->link;
-//         }
-//         next1->link = head;   // wrap around
-//     }
-
-//     L3 = *this;
-//     return L3;
-// }
 
 template <class T>
 ostream &operator<<(ostream &os, HeaderCircularList<T> &L)
