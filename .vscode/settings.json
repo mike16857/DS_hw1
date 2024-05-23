@@ -13,6 +13,19 @@
         "type_traits": "cpp",
         "iosfwd": "cpp",
         "cmath": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "exception": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "typeinfo": "cpp"
     }
 }
