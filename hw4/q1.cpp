@@ -213,11 +213,13 @@ public:
     bool Equal(TreeNode<T>* a , TreeNode<T>* b);
     void setup1();
     void setup2();
-    // void output();
+    void output1();
+    void output2();
 
 private:
 	TreeNode<T> *root;
 	void Visit(TreeNode<T> *p){cout << p->data << "  ";}
+    // void Destroy(TreeNode<T>* p);
 };
 
 template <class T>
@@ -497,12 +499,32 @@ void Tree<T>::setup2()
     *this = Tree<char> (B2, 'A', C2);
 }
 
-// template <class T>
-// void Tree<T>::output()
-// {
+template <class T>
+void Tree<T>::output1()
+{
+    cout << "         +    " << endl;
+	cout << "        / \\  " << endl;
+	cout << "       *    E " << endl;
+	cout << "      / \\    " << endl;
+	cout << "     *   D    " << endl;
+	cout << "    / \\      " << endl;
+	cout << "   -   C      " << endl;
+	cout << "  / \\        " << endl;
+	cout << " A   B        " << endl;
+}
 
-// }
-
+template <class T>
+void Tree<T>::output2()
+{
+    cout << "          A       " << endl;
+    cout << "         / \\     " << endl;
+    cout << "        /   \\    " << endl;
+    cout << "       B     C    " << endl;
+    cout << "      / \\   / \\ " << endl;
+    cout << "     D   E  F  G  " << endl;
+    cout << "    / \\          " << endl;
+    cout << "   H   J          " << endl;
+}
 
 template <class T>
 class InorderIterator
@@ -554,15 +576,17 @@ int main()
     Tree2.setup2();
 
     cout << "Ex1 :" << endl;
-    cout << "         +    " << endl;
-	cout << "        / \\  " << endl;
-	cout << "       *    E " << endl;
-	cout << "      / \\    " << endl;
-	cout << "     *   D    " << endl;
-	cout << "    / \\      " << endl;
-	cout << "   -   C      " << endl;
-	cout << "  / \\        " << endl;
-	cout << " A   B        " << endl << endl;
+    // cout << "         +    " << endl;
+	// cout << "        / \\  " << endl;
+	// cout << "       *    E " << endl;
+	// cout << "      / \\    " << endl;
+	// cout << "     *   D    " << endl;
+	// cout << "    / \\      " << endl;
+	// cout << "   -   C      " << endl;
+	// cout << "  / \\        " << endl;
+	// cout << " A   B        " << endl << endl;
+    Tree1.output1();
+    cout << endl;
 	
     if (Tree1.IsEmpty()) cout << "The tree is empty" << endl;
     else cout << "The tree is not empty" << endl;
@@ -592,15 +616,17 @@ int main()
     cout << "------------------------------------------------------------" << endl << endl;
     
     cout << "Ex2 : " << endl;
-	cout << "          A       " << endl;
-	cout << "         / \\     " << endl;
-	cout << "        /   \\    " << endl;
-	cout << "       B     C    " << endl;
-	cout << "      / \\   / \\ " << endl;
-	cout << "     D   E  F  G  " << endl;
-	cout << "    / \\          " << endl;
-	cout << "   H   J          " << endl << endl;
-	
+	// cout << "          A       " << endl;
+	// cout << "         / \\     " << endl;
+	// cout << "        /   \\    " << endl;
+	// cout << "       B     C    " << endl;
+	// cout << "      / \\   / \\ " << endl;
+	// cout << "     D   E  F  G  " << endl;
+	// cout << "    / \\          " << endl;
+	// cout << "   H   J          " << endl << endl;
+	Tree2.output2();
+    cout << endl;
+
     if (Tree2.IsEmpty()) cout << "The tree is empty" << endl;
     else cout << "The tree is not empty" << endl;
     cout << endl;

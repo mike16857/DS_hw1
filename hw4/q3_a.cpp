@@ -5,6 +5,10 @@ using namespace std;
 template <class T>
 class MaxPQ 
 {
+    template <class U>
+    friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
+    template <class U>
+    friend ostream& operator<<(ostream &, MaxPQ<U> &);
 public:
     virtual ~MaxPQ() {}  // virtual destructor
     virtual bool IsEmpty() const = 0; //return true iff empty
@@ -13,18 +17,32 @@ public:
     virtual void Pop() = 0;
 };
 
+template <class U>
+void ChangeSize1D(U* &a, const int oldSize, const int newSize)
+{
+    if (newSize < 0) throw "New length must be >= 0";
+    U *temp = new U[newSize];
+    int number = min(oldSize, newSize);
+    copy(a, a + number, temp);
+    delete []a;
+    a = temp;
+}
+
 
 template <class T>
 class MaxHeap : public class MaxPQ<T>
 {
     template <class U>
     friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
+    template <class U>
+    friend ostream& operator<<(ostream &, MaxHeap<U> &);
 public:
     MaxHeap(int theCapacity = 10); // constructor
     bool IsEmpty() const; //return true iff empty
     const T& Top() const; //return reference to the max
     void Push(const T&);
     void Pop();
+    // HeapConstruct(T* array, int n);
 private:
     T* heap; // element array
     int heapSize; // number of elements in heap
@@ -38,6 +56,19 @@ MaxHeap<T>::MaxHeap(int theCapacity) // constructor
     capacity = theCapacity;
     heapSize = 0;
     heap = new T [capacity + 1]; // heap[0] unused
+}
+
+template <class T>
+bool MaxHeap<T>::IsEmpty() const
+{
+    return heapSize == 0;
+}
+
+template <class T>
+const T& MaxHeap<T>::Top() const
+{
+    if (IsEmpty()) throw "Heap is empty. Cannot return.";
+    return heap[1];
 }
 
 template <class T>
@@ -74,16 +105,27 @@ void MaxHeap<T>::Pop()
     heap[currentNode] = lastE;
 }
 
-template <class U>
-void ChangeSize1D(U* &a, const int oldSize, const int newSize)
-{
-    if (newSize < 0) throw "New length must be >= 0";
-    U *temp = new U[newSize];
-    int number = min(oldSize, newSize);
-    copy(a, a + number, temp);
-    delete []a;
-    a = temp;
-}
+// template <class T>
+// MaxHeap<T>::HeapConstruct(T* array, int n)
+// {
+//     heap = array;
+//     heapSize = n;
+//     capacity = n;
+//     for (int i = n / 2; i >= 1; i--) {
+//         T e = heap[i];
+//         int currentNode = i;
+//         int child = 2 * i;
+//         while (child <= heapSize) {
+//             if (child < heapSize && heap[child] < heap[child + 1]) child++;
+//             if (e >= heap[child]) break;
+//             heap[currentNode] = heap[child];
+//             currentNode = child;
+//             child *= 2;
+//         }
+//         heap[currentNode] = e;
+//     }
+// }
+
 
 
 int main()
