@@ -3,18 +3,6 @@
 using namespace std;
 
 
-// template <class U>
-// void ChangeSize1D(U* &a, const int oldSize, const int newSize)
-// {
-//     if (newSize < 0) throw "New length must be >= 0";
-//     U *temp = new U[newSize];
-//     int number = min(oldSize, newSize);
-//     copy(a, a + number + 1, temp);
-//     delete []a;
-//     a = temp;
-// }
-
-
 template <class K, class E> class BST;
 template <class K, class E>
 class TreeNode 
@@ -131,7 +119,7 @@ void BST<K, E>::Insert(const pair<K, E>& thePair)
 }
 
 template <class K, class E>
-void BST<K, E>::Delete(const K& k) //
+void BST<K, E>::Delete(const K& k) 
 { 
     TreeNode<K, E> *p = root, *pp = p, *ppp;
 	
@@ -153,62 +141,34 @@ void BST<K, E>::Delete(const K& k) //
 			pp = pp->rightChild;
 		}
 		p->data = pp->data;
-		if(pp->leftChild != NULL){				// ���N�I�������٦����� 
-			ppp->rightChild = pp->leftChild;	// ����W�@�Ӫ��k�� 
+		if(pp->leftChild != NULL){				 
+			ppp->rightChild = pp->leftChild;	
 			delete pp;
 		}
 		else if(ppp == pp){
 			p->leftChild = NULL;
 			delete pp;
 		}
-		else{									// ���N�I������S������
-			ppp->rightChild = NULL;				// �R�����N�I 
+		else{									
+			ppp->rightChild = NULL;				
             delete pp;
 		}
 	}
-	else if(p->leftChild != NULL){				// p�k�� 
-		if(pp->rightChild == p) pp->rightChild = p->leftChild;	// p�bpp�k��
+	else if(p->leftChild != NULL){				
+		if(pp->rightChild == p) pp->rightChild = p->leftChild;	
         else pp->leftChild = p->leftChild;
         delete p;
 	}
-	else if(p->rightChild != NULL){				// p���� 
-		if(pp->rightChild == p) pp->rightChild = p->rightChild;	// p�bpp�k��
+	else if(p->rightChild != NULL){				
+		if(pp->rightChild == p) pp->rightChild = p->rightChild;	
         else pp->leftChild = p->rightChild;
         delete p;
 	}
-	else{										// p���k�� 
-		if(pp->rightChild == p) pp->rightChild = NULL;	// p�bpp�k��
+	else{										
+		if(pp->rightChild == p) pp->rightChild = NULL;	
         else pp->leftChild = NULL;
         delete p;
 	}
-
-    // // Delete the pair with key k
-    // TreeNode<K, E> *p = root, *pp = 0;
-    // // search for k
-    // while (p && p->data.first != k) {
-    //     pp = p;
-    //     if (k < p->data.first) p = p->leftChild;
-    //     else p = p->rightChild;
-    // }
-    // if (!p) return; // not found
-    // // restructure the tree
-    // if (p->leftChild && p->rightChild) { // p has two children
-    //     TreeNode<K, E> *s = p->leftChild, *ps = p; // find largest node in left subtree
-    //     while (s->rightChild) {
-    //         ps = s; s = s->rightChild;
-    //     }
-    //     // move largest from left subtree to p
-    //     p->data = s->data; p = s; pp = ps;
-    // }
-    // // p has at most one child
-    // TreeNode<K, E> *c;
-    // if (p->leftChild) c = p->leftChild;
-    // else c = p->rightChild;
-    // // delete p
-    // if (p == root) root = c; // p is root
-    // else if (p == pp->leftChild) pp->leftChild = c;
-    // else pp->rightChild = c;
-    // delete p;
 }
 
 template <class K, class E>
@@ -308,7 +268,6 @@ ostream& operator<<(ostream &os, pair<K, E> &pair)
 int main()
 {
     int key, del;
-    // Dictionary<int, char> D;
     BST<int, char> T, left, right;
     pair<int, char> pair[13], *A, *mid;
     pair[0].first = 50; pair[0].second = 'A';
@@ -327,28 +286,10 @@ int main()
     
     for(int i = 0; i < 13; i++){
     	cout << "Inserts (" << pair[i].first << ", " << pair[i].second << ") to Dictionary and BST" << endl;
-		// D.Insert(pair[i]);
 		T.Insert(pair[i]);
 	}
 	cout << endl;
-	
-	// Dictionary
-	// cout << "Dictionary :" << endl;
-    // cout << D;
-    
-    // cout << "Which element do you want to get ? : ";
-    // cin >> key;
-    // cout << "Get element with key " << key << " : ";
-    // A = D.Get(key);
-    // if(A) cout << *A << endl;
-    // else cout << "Can't find" << endl;
-    
-    // cout << "Which element do you want to delete ? : ";
-    // cin >> del;
-    // cout << "Delete element with key " << del << " : ";
-    // D.Delete(del);
-    // cout << endl << D;
-    // cout << endl;
+
     
     // BST
     cout << "BST :" << endl;
