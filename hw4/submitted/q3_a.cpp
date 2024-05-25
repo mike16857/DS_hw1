@@ -2,6 +2,18 @@
 using namespace std;
 
 
+template <class U>
+void ChangeSize1D(U* &a, const int oldSize, const int newSize)
+{
+    if (newSize < 0) throw "New length must be >= 0";
+    U *temp = new U[newSize];
+    int number = min(oldSize, newSize);
+    copy(a, a + number + 1, temp);
+    delete []a;
+    a = temp;
+}
+
+
 template <class T>
 class MaxPQ 
 {
@@ -17,20 +29,9 @@ public:
     virtual void Pop() = 0;
 };
 
-template <class U>
-void ChangeSize1D(U* &a, const int oldSize, const int newSize)
-{
-    if (newSize < 0) throw "New length must be >= 0";
-    U *temp = new U[newSize];
-    int number = min(oldSize, newSize);
-    copy(a, a + number, temp);
-    delete []a;
-    a = temp;
-}
-
 
 template <class T>
-class MaxHeap : public class MaxPQ<T>
+class MaxHeap : public MaxPQ<T>
 {
     template <class U>
     friend void ChangeSize1D(U* &a, const int oldSize, const int newSize);
@@ -38,11 +39,11 @@ class MaxHeap : public class MaxPQ<T>
     friend ostream& operator<<(ostream &, MaxHeap<U> &);
 public:
     MaxHeap(int theCapacity = 10); // constructor
+    MaxHeap(T* array, int n); // bottom up heap construction
     bool IsEmpty() const; //return true iff empty
     const T& Top() const; //return reference to the max
     void Push(const T&);
     void Pop();
-    // HeapConstruct(T* array, int n);
 private:
     T* heap; // element array
     int heapSize; // number of elements in heap
@@ -105,31 +106,68 @@ void MaxHeap<T>::Pop()
     heap[currentNode] = lastE;
 }
 
-// template <class T>
-// MaxHeap<T>::HeapConstruct(T* array, int n)
-// {
-//     heap = array;
-//     heapSize = n;
-//     capacity = n;
-//     for (int i = n / 2; i >= 1; i--) {
-//         T e = heap[i];
-//         int currentNode = i;
-//         int child = 2 * i;
-//         while (child <= heapSize) {
-//             if (child < heapSize && heap[child] < heap[child + 1]) child++;
-//             if (e >= heap[child]) break;
-//             heap[currentNode] = heap[child];
-//             currentNode = child;
-//             child *= 2;
-//         }
-//         heap[currentNode] = e;
-//     }
-// }
+template <class T>
+MaxHeap<T>::MaxHeap(T* array, int n)
+{
+    capacity = n + 1;
+    heapSize = n;
+    heap = new T[capacity];
+    copy(array, array + n, heap + 1);
 
+    for (int i = heapSize / 2; i > 0; i--) {
+        T node = heap[i];
+        int currentNode = i;
+        int child = 2 * i;
+        // bubble down
+        while (child <= heapSize) {
+            if (child < heapSize && heap[child] < heap[child + 1]) child++; // swap with the larger child
+            if (node >= heap[child]) break;
+            heap[currentNode] = heap[child];
+            currentNode = child;
+            child *= 2;
+        }
+        heap[currentNode] = node;
+    }
+}
+
+template <class T>
+ostream& operator<<(ostream& os, MaxHeap<T> &H)
+{
+    int i;
+    os << "[" << H.heap[1];
+    for (i = 2; i <= H.heapSize; i++)
+        os << ", " << H.heap[i];
+    os << "]" << endl;
+    
+    return os;
+}
 
 
 int main()
 {
+    MaxHeap<int> heap;
+    // MaxPQ<int> M;
+    int A[13] = {50, 5, 30, 40, 80, 35, 2, 20, 15, 60, 70, 8, 10};
+
+    cout << "Max Heap : " << endl;
+    for(int i = 0; i < 13; i++) {
+        cout << "Push " << A[i] << ": ";
+        heap.Push(A[i]);
+        cout << heap;
+    }
+    
+    cout << endl;
+    if(heap.IsEmpty()) cout << "The Heap is empty";
+    else cout << "The Heap is not empty" << endl;
+    cout << "The Max element is : " << heap.Top() << endl;
+    cout << "After Pop : ";
+    heap.Pop();
+	cout << heap;
+    cout << "The Max element is : " << heap.Top() << endl << endl;
+
+    cout << "Initialize using bottom up : " << endl;   
+	MaxHeap<int> heap2(A, 13);
+	cout << heap2;
     
     return 0;
 }
