@@ -29,8 +29,8 @@ public:
     void PrintBellman(const int n);
     void PrintFloyd(const int n);
 private:
-    int num;          // number of vertices
-    int **length;
+    int num;        // number of vertices
+    int **length;   // adjacency matrix
     int *dist;      // the shortest path length from beginning vertex to vertex i
     int *pre;       // the previous vertex on Shortest path
     bool *s;        // if the vertex is in set S
@@ -142,24 +142,26 @@ void MatrixWDigraph::SetupG3()
 
 void MatrixWDigraph::Dijkstra(const int n, const int v)
 {
-    for (int i = 0; i < n; i++) {
+    // Initialization
+    for (int i = 0; i < n; i++) { // empty set S
         s[i] = false;
         dist[i] = length[v][i];
-        if (length[v][i] != LARGE) pre[i] = v;
+        if (length[v][i] != LARGE) pre[i] = v; // vertex is visited before
         else pre[i] = UNKNOWN;
     }
     s[v] = true;
     dist[v] = 0;
     pre[v] = SELF;
 
+    // Traverse the graph
     int u = v;
     for (int i = 0; i < n - 1 && dist[u] < LARGE; i++) {
         u = Choose(n);
         if (dist[u] < LARGE) {
-            s[u] = true;
+            s[u] = true;    // include u into S
             PrintPath(u);
-            for (int w = 0; w < n && i != n - 1; w++) {
-                if (!s[w] && dist[u] + length[u][w] < dist[w]) {
+            for (int w = 0; w < n && i != n - 1; w++) {  // update vertices adjacent to u
+                if (!s[w] && dist[u] + length[u][w] < dist[w]) { // if w is not in S and the path from v to w through u is shorter
                     dist[w] = dist[u] + length[u][w];
                     pre[w] = u;
                 }
