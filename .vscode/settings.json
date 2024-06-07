@@ -4,6 +4,14 @@
         "ostream": "cpp",
         "new": "cpp",
         "list": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "initializer_list": "cpp",
+        "stdexcept": "cpp"
     }
 }

@@ -129,36 +129,36 @@ inline T& Queue<T>::Rear() const
 }
 
 
-template <class T>
-class ChainNode 
-{
-    friend class Chain<T>;
-    friend class ChainIterator<T>;
-    template <class U>
-    friend ostream& operator<<(ostream& os, Chain<U>& c);
-public:
-    ChainNode(T element = 0, ChainNode<T>* next = 0) {data = element; link = next;}
-private:
-	T data;
-	ChainNode<T>* link;
-};
+// template <class T>
+// class ChainNode 
+// {
+//     friend class Chain<T>;
+//     friend class ChainIterator<T>;
+//     template <class U>
+//     friend ostream& operator<<(ostream& os, Chain<U>& c);
+// public:
+//     ChainNode(T element = 0, ChainNode<T>* next = 0) {data = element; link = next;}
+// private:
+// 	T data;
+// 	ChainNode<T>* link;
+// };
 
 
-template <class T>
-class Chain 
-{   
-    friend class ChainIterator<T>;
-    friend class LinkedGraph;
-    friend class ChainNode<T>;
-public:
-	Chain() {first = 0;} // 建構子將first, last初始化成0
-	// ~Chain(); //desctructor                  
-    void InsertBack(const T& e);           
-    ChainIterator<T> begin() {return ChainIterator<T>(first);}
-    ChainIterator<T> end()  {return ChainIterator<T>(0);}
-protected:
-	ChainNode<T> *first;
-};
+// template <class T>
+// class Chain 
+// {   
+//     friend class ChainIterator<T>;
+//     friend class LinkedGraph;
+//     friend class ChainNode<T>;
+// public:
+// 	Chain() {first = 0;} // 建構子將first, last初始化成0
+// 	// ~Chain(); //desctructor                  
+//     void InsertBack(const T& e);           
+//     ChainIterator<T> begin() {return ChainIterator<T>(first);}
+//     ChainIterator<T> end()  {return ChainIterator<T>(0);}
+// protected:
+// 	ChainNode<T> *first;
+// };
 
 // template <class T>
 // Chain<T>::~Chain()
@@ -185,48 +185,48 @@ protected:
 //         current->link = newNode;
 //     }
 // }
-template <class T>
-void Chain<T>::InsertBack(const T &e)
-{
-    ChainNode<T>* temp;
-    if(first == NULL){
-        first = new ChainNode<T>;
-        first->data = e;
-        first->link = NULL;
-        return;
-    }
-    for (temp = first; temp->link != NULL; temp = temp->link);
-    ChainNode<T> *newNode = new ChainNode<T>;
-    newNode->data = e;
-    temp->link = newNode;
+// template <class T>
+// void Chain<T>::InsertBack(const T &e)
+// {
+//     ChainNode<T>* temp;
+//     if(first == NULL){
+//         first = new ChainNode<T>;
+//         first->data = e;
+//         first->link = NULL;
+//         return;
+//     }
+//     for (temp = first; temp->link != NULL; temp = temp->link);
+//     ChainNode<T> *newNode = new ChainNode<T>;
+//     newNode->data = e;
+//     temp->link = newNode;
     
-    return;
-}
+//     return;
+// }
 
 
-template <class T>
-class ChainIterator
-{
-    friend class LinkedGraph;
-public: 
-    //Constructor
-    ChainIterator(ChainNode<T>* startNode = 0) {current = startNode;}
-    ChainIterator(Chain<T> &ch){current = ch.first;}
-    //Dereferencing operators
-    T& operator *() const {return current->data;}
-    T* operator ->() const {return &current->data;}
-    //Increment
-    ChainIterator& operator ++() {current = current ->link; return *this;}  //preincrement
-    ChainIterator& operator ++(int) {ChainIterator old = *this; current = current ->link; return old;}  //postincrement
-    //Equality test
-    bool operator!=(const ChainIterator r) {return current != r.current;}
-    bool operator==(const ChainIterator r) {return current == r.current;}
-    bool NotNull() {return current != 0;}
-    bool NextNotNull() {return current->link != 0;}
+// template <class T>
+// class ChainIterator
+// {
+//     friend class LinkedGraph;
+// public: 
+//     //Constructor
+//     ChainIterator(ChainNode<T>* startNode = 0) {current = startNode;}
+//     ChainIterator(Chain<T> &ch){current = ch.first;}
+//     //Dereferencing operators
+//     T& operator *() const {return current->data;}
+//     T* operator ->() const {return &current->data;}
+//     //Increment
+//     ChainIterator& operator ++() {current = current ->link; return *this;}  //preincrement
+//     ChainIterator& operator ++(int) {ChainIterator old = *this; current = current ->link; return old;}  //postincrement
+//     //Equality test
+//     bool operator!=(const ChainIterator r) {return current != r.current;}
+//     bool operator==(const ChainIterator r) {return current == r.current;}
+//     bool NotNull() {return current != 0;}
+//     bool NextNotNull() {return current->link != 0;}
     
-private: 
-    ChainNode<T> *current;
-};
+// private: 
+//     ChainNode<T> *current;
+// };
 
 
 class Graph {
