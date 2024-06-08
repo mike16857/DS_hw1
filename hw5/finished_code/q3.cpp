@@ -29,8 +29,8 @@ public:
     void PrintChart();
     void CriticalPath();
 
-    void Setup1();
-    void Setup2();
+    void Setup1(); // Fig 6.39
+    void Setup2(); // Fig 6.44
     
 private:
     int n; // number of vertices
@@ -256,11 +256,13 @@ int main()
     cout << "Fig 6.39:" << endl;
     cout << "Topological order:\n";
     G1.TopologicalOrder();
+    cout << endl;
 
     cout << "Earliest event time:\n";
     G1.EarliestEventTime();
     cout << "Latest event time:\n";
     G1.LatestEventTime();
+    cout << endl;
 
     G1.ActivityTime();
 
@@ -276,12 +278,14 @@ int main()
     cout << "Fig 6.44:" << endl;
     cout << "Topological order:\n";
     G2.TopologicalOrder();
+    cout << endl;
 
     cout << "Earliest event time:\n";
     G2.EarliestEventTime();
     cout << "Latest event time:\n";
     G2.LatestEventTime();
-
+    cout << endl;
+    
     G2.ActivityTime();
 
     cout << "Activity table:\n";
